@@ -4,5 +4,6 @@ ggplot2
 magrittr
 shiny
 cowplot
-withr'
+withr
+forcats'
 )[[1]]))
