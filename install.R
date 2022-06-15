@@ -1,5 +1,8 @@
-install.packages("tidyverse")
-install.packages("rmarkdown")
-install.packages("httr")
-install.packages("shinydashboard")
-install.packages('leaflet')
+invisible(sapply(FUN = library,character.only = T,X = strsplit(split='\n',
+'data.table
+ggplot2
+magrittr
+shiny
+cowplot
+withr'
+)[[1]]))
