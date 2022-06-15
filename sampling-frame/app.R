@@ -5,6 +5,7 @@ library(magrittr)
 library(cowplot)
 library(withr)
 library(forcats)
+data.table::setDTthreads(1)
 
 sz<-500
 beta<-.5
