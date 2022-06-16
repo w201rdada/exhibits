@@ -2,7 +2,7 @@
 
 _____ 
 
-##### [![Binder](http://mybinder.org/badge_logo.svg) Sampling Frame](https://mybinder.org/v2/gh/w201rdada/exhibits-env/master?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252Fw201rdada%252Fexhibits%26urlpath%3Dshiny%252Fexhibits%252Fsampling-frame%252F%26branch%3Dmaster)
+#### [![Binder](http://mybinder.org/badge_logo.svg) Sampling Frame](https://mybinder.org/v2/gh/w201rdada/exhibits-env/master?urlpath=git-pull%3Frepo%3Dhttps%253A%252F%252Fgithub.com%252Fw201rdada%252Fexhibits%26urlpath%3Dshiny%252Fexhibits%252Fsampling-frame%252F%26branch%3Dmaster)
 Draw your own sampling frame and see how a sample estimate compares to the ground truth.
 
 _____ 
