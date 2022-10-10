@@ -22,10 +22,19 @@ dnx<-dnorm(dny)*exg
 crv<-mapply(x=bones$x,y=bones$y,ix=1:nrow(bones),function(x,y,ix) data.table(x=x+dnx,y=y+dny,ix=ix),SIMPLIFY = F) %>% rbindlist
 crv[,ix:=factor(ix) %>% fct_rev]
 crv %<>% .[!.(ix %>% levels %>% first),on='ix']
+p<-ggplot(dat, aes(x=x, y=y)) +
+	geom_polygon(data=crv,aes(x=x,y=y,group=ix),fill='whitesmoke',color='gray',inherit.aes = F) +
+	geom_vline(color='white',size=3,aes(xintercept=x),data=crv[,.(x=min(x)),by=ix]) +
+	geom_point(size=2,shape=21) +
+	geom_abline(intercept=cf[1],slope=cf[2],linetype='dashed') +
+	coord_fixed() + xlim(-4,NA) + ylim(-4,4) + cowplot::theme_cowplot() +
+	ggtitle(label = 'Population, sampling frame, and sample visualizer.'
+					,subtitle = 'Brush to draw a sampling frame; a 50% sample will be randomly selected, and a linear model fit.\nThe dotted line represents the population fit. Normal curves represent conditional distributions of y along x.\nA new sample will be continually drawn and a line fit to demonstrate sampling variability.')
 
 shinyApp(
 	ui = fluidPage(
-		plotOutput(
+		tags$style(type="text/css",".recalculating {opacity: 1.0;}")
+		,plotOutput(
 			outputId = "plot",
 			brush = brushOpts(
 				id = "plotBrush",fill = NA,stroke='blue',
@@ -36,8 +45,10 @@ shinyApp(
 
 	),
 	server = function(input, output, session) {
+		autoInvalidate <- reactiveTimer(500)
 		observeEvent(
 			eventExpr = {
+				autoInvalidate()
 				input$plotBrush
 			}
 			,handlerExpr = {
@@ -51,21 +62,13 @@ shinyApp(
 
 		observeEvent(
 			eventExpr = {
+				autoInvalidate()
 				input$plotBrush
 			}
 			,handlerExpr = {
 				output$plot <- renderPlot({
-					ggplot(dat, aes(x=x, y=y)) +
-						geom_polygon(data=crv,aes(x=x,y=y,group=ix),fill='whitesmoke',color='gray',inherit.aes = F) +
-						geom_vline(color='white',size=3,aes(xintercept=x),data=crv[,.(x=min(x)),by=ix]) +
-						geom_point(size=2,shape=21) +
-						geom_abline(intercept=cf[1],slope=cf[2],linetype='dashed') +
-						coord_fixed() + xlim(-4,NA) + ylim(-4,4) + cowplot::theme_cowplot() +
-
-						geom_smooth(data=smp,method='lm',linetype='solid',formula=y ~ x) +
-						geom_point(data=smp,size=1.5,color='blue') +
-						ggtitle(label = 'Population, sampling frame, and sample visualizer.'
-										,subtitle = 'Brush to draw a sampling frame; a 50% sample will be randomly selected, and a linear model fit.\nThe dotted line represents the population fit. Normal curves represent conditional distributions of y along x.')
+						p+geom_smooth(data=smp,method='lm',linetype='solid',formula=y ~ x) +
+						geom_point(data=smp,size=1.5,color='blue')
 				})
 			}
 			,ignoreNULL = F,ignoreInit = F,priority = 0
