@@ -38,14 +38,14 @@ shinyApp(
 			outputId = "plot",
 			brush = brushOpts(
 				id = "plotBrush",fill = NA,stroke='blue',
-				delay = 5000, direction = c('xy'),resetOnNew = F
+				delay = 1000, direction = c('xy'),resetOnNew = F
 			)
 			,height='800px'
 		),
 
 	),
 	server = function(input, output, session) {
-		autoInvalidate <- reactiveTimer(500)
+		autoInvalidate <- reactiveTimer(1000)
 		observeEvent(
 			eventExpr = {
 				autoInvalidate()
@@ -68,7 +68,7 @@ shinyApp(
 			,handlerExpr = {
 				output$plot <- renderPlot({
 						p+geom_smooth(data=smp,method='lm',linetype='solid',formula=y ~ x) +
-						geom_point(data=smp,size=1.5,color='blue')
+						geom_point(data=smp,size=1.5,fill='blue',color='white',shape=21)
 				})
 			}
 			,ignoreNULL = F,ignoreInit = F,priority = 0
